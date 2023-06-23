@@ -27,7 +27,7 @@ class InMemCapture(Capture):
                  decryption_key=None, encryption_type='wpa-pwk', decode_as=None,
                  disable_protocol=None, tshark_path=None, override_prefs=None, use_json=False, use_ek=False,
                  linktype=LinkTypes.ETHERNET, include_raw=False, eventloop=None, custom_parameters=None,
-                 debug=False):
+                 use_text=False, debug=False):
         """Creates a new in-mem capture, a capture capable of receiving binary packets and parsing them using tshark.
 
         Significantly faster if packets are added in a batch.
@@ -49,7 +49,7 @@ class InMemCapture(Capture):
         """
         super(InMemCapture, self).__init__(display_filter=display_filter, only_summaries=only_summaries,
                                            decryption_key=decryption_key, encryption_type=encryption_type,
-                                           decode_as=decode_as, disable_protocol=disable_protocol,
+                                           use_text=use_text, decode_as=decode_as, disable_protocol=disable_protocol,
                                            tshark_path=tshark_path, override_prefs=override_prefs,
                                            use_json=use_json, use_ek=use_ek,
                                            include_raw=include_raw, eventloop=eventloop,

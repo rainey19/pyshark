@@ -5,7 +5,7 @@ from pyshark.capture.capture import Capture
 
 class PipeCapture(Capture):
     def __init__(self, pipe, display_filter=None, only_summaries=False,
-                 decryption_key=None, encryption_type='wpa-pwk', decode_as=None,
+                 decryption_key=None, encryption_type='wpa-pwk', decode_as=None, use_text=False,
                  disable_protocol=None, tshark_path=None, override_prefs=None, use_json=False,
                  include_raw=False, eventloop=None, custom_parameters=None, debug=False):
         """Receives a file-like and reads the packets from there (pcap format).
@@ -30,7 +30,7 @@ class PipeCapture(Capture):
                                           decryption_key=decryption_key,
                                           encryption_type=encryption_type,
                                           decode_as=decode_as, disable_protocol=disable_protocol,
-                                          tshark_path=tshark_path, override_prefs=override_prefs,
+                                          tshark_path=tshark_path, override_prefs=override_prefs, use_text=use_text,
                                           use_json=use_json, include_raw=include_raw, eventloop=eventloop,
                                           custom_parameters=custom_parameters, debug=debug)
         self._pipe = pipe

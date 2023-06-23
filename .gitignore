@@ -216,3 +216,8 @@ pip-log.txt
 
 # Pycharm
 .idea/
+
+# Custom
+.vscode
+test file*
+test.py

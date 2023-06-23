@@ -11,6 +11,7 @@ from pyshark import ek_field_mapping
 from pyshark.packet.packet import Packet
 from pyshark.tshark.output_parser import tshark_ek
 from pyshark.tshark.output_parser import tshark_json
+from pyshark.tshark.output_parser import tshark_text
 from pyshark.tshark.output_parser import tshark_xml
 from pyshark.tshark.tshark import get_process_path, get_tshark_display_filter_flag, \
     tshark_supports_json, TSharkVersionException, get_tshark_version, tshark_supports_duplicate_keys
@@ -49,13 +50,14 @@ class Capture:
                  decryption_key=None, encryption_type="wpa-pwd", output_file=None,
                  decode_as=None,  disable_protocol=None, tshark_path=None,
                  override_prefs=None, capture_filter=None, use_json=False, include_raw=False,
-                 use_ek=False, custom_parameters=None, debug=False):
+                 use_text=False, use_ek=False, custom_parameters=None, debug=False):
 
         self.loaded = False
         self.tshark_path = tshark_path
         self._override_prefs = override_prefs
         self.debug = debug
         self.use_json = use_json
+        self.use_text = use_text
         self._use_ek = use_ek
         self.include_raw = include_raw
         self._packets = []
@@ -335,10 +337,16 @@ class Capture:
                 output_parameters.append("--no-duplicate-keys")
         elif self._use_ek:
             output_type = "ek"
+        elif self.use_text:
+            output_type = "tabs"
         else:
             output_type = "psml" if self._only_summaries else "pdml"
         parameters = [self._get_tshark_path(), "-l", "-n", "-T", output_type] + \
             self.get_parameters(packet_count=packet_count) + output_parameters
+        if self.use_text:
+            parameters.append("-V")
+            parameters.append("-x")
+            parameters.append('-S "=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/="')
 
         self._log.debug(
             "Creating TShark subprocess with parameters: " + " ".join(parameters))
@@ -387,6 +395,8 @@ class Capture:
             ek_field_mapping.MAPPING.load_mapping(str(self._get_tshark_version()),
                                                   tshark_path=self.tshark_path)
             return tshark_ek.TsharkEkJsonParser()
+        if self.use_text:
+            return tshark_text.TsharkTextParser(self._get_tshark_version())
         return tshark_xml.TsharkXmlParser(parse_summaries=self._only_summaries)
 
     def close(self):

@@ -10,7 +10,7 @@ class FileCapture(Capture):
     def __init__(self, input_file=None, keep_packets=True, display_filter=None, only_summaries=False,
                  decryption_key=None, encryption_type="wpa-pwk", decode_as=None,
                  disable_protocol=None, tshark_path=None, override_prefs=None,
-                 use_json=False, use_ek=False,
+                 use_json=False, use_ek=False, use_text=False,
                  output_file=None, include_raw=False, eventloop=None, custom_parameters=None,
                  debug=False):
         """Creates a packet capture object by reading from file.
@@ -40,7 +40,7 @@ class FileCapture(Capture):
                                           decode_as=decode_as, disable_protocol=disable_protocol,
                                           tshark_path=tshark_path, override_prefs=override_prefs,
                                           use_json=use_json, use_ek=use_ek, output_file=output_file,
-                                          include_raw=include_raw, eventloop=eventloop,
+                                          use_text=use_text, include_raw=include_raw, eventloop=eventloop,
                                           custom_parameters=custom_parameters, debug=debug)
         self.input_filepath = pathlib.Path(input_file)
         if not self.input_filepath.exists():
